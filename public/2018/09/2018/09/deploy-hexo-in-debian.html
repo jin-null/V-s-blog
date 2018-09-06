@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+
+    
+
+    
+
+    <title>在debian上部署hexo | V`s Blog</title>
+    <meta name="author" content="Jin Wei" />
+    <meta name="version" content="1.0.0" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="接触了一下Hexo，大概是比laravel 博客要简单了很多很多很多。作为个人博客只需要配置就行了，简单的业务逻辑根本用不上laravel（顺便数据库也省了）于是打算直接部署上腾讯云的机器上。
+云服务器配置腾讯云服务器趁着活动买了2年的腾讯云服务，但是基本上是闲置，无聊的时候就重装下系统配置信息：
+
+操作系统:    Debian 9.0 64位
+
+
+CPU:    1 核
+
+
+内存:    2 GB
+
+
+公网带宽:     1 Mbps
+
+github配置github上新建一个空的项目V`s " />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+    <meta name="baidu-site-verification" content="F0CXvmUgA9" />
+
+    
+    
+    <link rel="icon" href="/favicon.png">
+    
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <div class="app">
+        <header class="header clearfix">
+    <div id="nav" class="nav">
+    <button id="open-panel" class="open-panel"><i class="icon-library"></i></button>
+
+    <nav class="nav-inner">
+
+        
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+        </li>
+        
+        
+        
+        <li class="nav-item nav-item-tag">
+            <a id="nav-tag" class="nav-link" href="#">标签</a>
+            <div id="nav-tags" class="nav-tag-wrap">
+                <i class="nav-tag-arrow"></i>
+                
+  <div class="widget-wrap">
+    <h3 class="widget-title">
+        <i class="icon-tag vm"></i>
+        <span class="vm">标签</span>
+    </h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/debian/">debian</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
+    </div>
+  </div>
+
+
+            </div>
+        </li>
+        
+        
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/archives">归档</a>
+        </li>
+        
+        
+        
+
+    </nav>
+</div>
+
+    <aside id="aside" class="aside">
+    <div id="aside-mask" class="aside-mask"></div>
+    <div id="aside-inner" class="aside-inner">
+        <!--<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"><i class="icon-search-stroke"></i></button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>-->
+
+        
+        
+        
+        
+
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#云服务器配置"><span class="toc-number">1.</span> <span class="toc-text">云服务器配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#腾讯云服务器"><span class="toc-number">1.1.</span> <span class="toc-text">腾讯云服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#github配置"><span class="toc-number">1.2.</span> <span class="toc-text">github配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#部署到云服务器"><span class="toc-number">1.3.</span> <span class="toc-text">部署到云服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置nginx"><span class="toc-number">1.4.</span> <span class="toc-text">配置nginx</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+</header>
+
+        <div id="content" class="content"><article class="article" itemscope itemprop="blogPost">
+    
+        <header class="article-header">
+            
+                <h1 itemprop="name">
+                    在debian上部署hexo
+                </h1>
+            
+            <div class="article-meta clearfix">
+                <a class="article-date" href="/2018/09/2018/09/deploy-hexo-in-debian.html">
+    
+    <i class="icon-calendar"></i>
+    
+    <time datetime="2018-09-06T07:38:17.618Z" itemprop="datePublished">2018-09-06</time>
+</a>
+
+                
+<div class="article-tag-list">
+    <i class="icon-tag"></i>
+    <a class="article-tag-link" href="/tags/debian/">debian</a>, <a class="article-tag-link" href="/tags/hexo/">hexo</a>
+</div>
+
+
+            </div>
+        </header>
+    
+    <section class="article-body markdown-body">
+        
+            <p>接触了一下Hexo，大概是比laravel 博客要简单了很多很多很多。<br>作为个人博客只需要配置就行了，简单的业务逻辑根本用不上laravel（顺便数据库也省了）<br>于是打算直接部署上腾讯云的机器上。</p>
+<h2 id="云服务器配置"><a href="#云服务器配置" class="headerlink" title="云服务器配置"></a>云服务器配置</h2><h3 id="腾讯云服务器"><a href="#腾讯云服务器" class="headerlink" title="腾讯云服务器"></a>腾讯云服务器</h3><p>趁着活动买了2年的腾讯云服务，但是基本上是闲置，无聊的时候就重装下系统<br><a id="more"></a><br>配置信息：</p>
+<blockquote>
+<p>操作系统:    Debian 9.0 64位</p>
+</blockquote>
+<blockquote>
+<p>CPU:    1 核</p>
+</blockquote>
+<blockquote>
+<p>内存:    2 GB</p>
+</blockquote>
+<blockquote>
+<p>公网带宽:     1 Mbps</p>
+</blockquote>
+<h3 id="github配置"><a href="#github配置" class="headerlink" title="github配置"></a>github配置</h3><p>github上新建一个空的项目V`s blog</p>
+<p>然后git到本地<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/jin-null/V<span class="_">-s</span>-blog.git</span><br></pre></td></tr></table></figure></p>
+<p>将本地的Hexo文件剪切到空的V-s-blog</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> V<span class="_">-s</span>-blog</span><br></pre></td></tr></table></figure>
+<p>生成静态文件 </p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br><span class="line"></span><br><span class="line">可以简写</span><br><span class="line"></span><br><span class="line">$ hexo g</span><br></pre></td></tr></table></figure>
+<p>然后push到github</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push</span><br></pre></td></tr></table></figure>
+<h3 id="部署到云服务器"><a href="#部署到云服务器" class="headerlink" title="部署到云服务器"></a>部署到云服务器</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /home/web</span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/jin-null/V<span class="_">-s</span>-blog.git</span><br></pre></td></tr></table></figure>
+<h3 id="配置nginx"><a href="#配置nginx" class="headerlink" title="配置nginx"></a>配置nginx</h3><p>安装nginx<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ apt-get update </span><br><span class="line">$ apt-get upgrade </span><br><span class="line">$ apt-get install nginx  </span><br><span class="line">$ service nginx start</span><br></pre></td></tr></table></figure></p>
+<p>配置 </p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /etc/nginx/sites-enabled</span><br></pre></td></tr></table></figure>
+<p>修改default文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line">   root /home/web/V<span class="_">-s</span>-blog/public;</span><br><span class="line">   </span><br><span class="line">   server_name www.yununo.com; </span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>保存修改后重启nginx<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ service nginx restart</span><br></pre></td></tr></table></figure></p>
+<p>访问 <a href="http://" target="_blank" rel="noopener"></a><a href="http://www.yunuuo.com" target="_blank" rel="noopener">www.yunuuo.com</a></p>
+
+        
+    </section>
+</article>
+
+
+
+<div class="comments">
+    <div id="disqus_thread">
+        <p class="comment-tips">国内查看评论需要代理~</p>
+    </div>
+    <script>
+    window.disqus_config = function () {
+        this.language = 'zh';
+        this.page.url = 'http://yoursite.com/2018/09/2018/09/deploy-hexo-in-debian.html';
+        this.page.title = '在debian上部署hexo';
+        this.page.identifier = '2018/09/2018/09/deploy-hexo-in-debian.html';
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://name.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+</div>
+        <footer class="footer">
+    Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, Theme by <a href="https://github.com/sanonz/hexo-theme-concise" target="_blank">Concise</a>
+</footer>
+
+<script type="text/javascript" src="//s13.cnzz.com/z_stat.php?id=1234567890&amp;web_id=1234567890"></script>
+
+
+    </div>
+
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.9.0/jquery.min.js"></script>
+    
+    <script type="text/javascript" src="/js/scrollspy.min.js"></script>
+    
+    <script type="text/javascript">
+        $(function() {
+            var nodes = {
+                nav: $('#nav'),
+                aside: $('#aside'),
+                navTags: $('#nav-tags')
+            };
+
+            $('#open-panel, #aside-mask').on('click', function() {
+                nodes.aside.toggleClass('panel-show');
+            });
+            $('#nav-tag').on('click', function(event) {
+                event.preventDefault();console.log(nodes.navTags.attr('class'))
+                nodes.navTags.toggleClass('tag-show');console.log(nodes.navTags.attr('class'))
+            })/*.hover(function() {
+                nodes.navTags.addClass('tag-show');
+            }, function() {
+                nodes.navTags.removeClass('tag-show');
+            });*/
+
+            
+            $(document.body).scrollspy({target: '#aside-inner'});
+            
+        });
+    </script>
+
+</body>
+</html>
