@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+
+    
+
+    
+
+    <title>自定义FormRequest ValidationException 返回错误信息 | V`s Blog</title>
+    <meta name="author" content="Jin Wei" />
+    <meta name="version" content="1.0.0" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="对于复杂的验证场景，你可能想要创建一个“表单请求”。表单请求是包含验证逻辑的自定义请求类，要创建表单验证类，可以使用 Artisan 命令 make:request
+创建表单请求Create a FormRequest$ php artisan make:request
+
+配置request文件public function authorize()&amp;#123;    return true;&amp;#125;public function rules()&amp;#123;    return [      " />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+    <meta name="baidu-site-verification" content="F0CXvmUgA9" />
+
+    
+    
+    <link rel="icon" href="/favicon.png">
+    
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <div class="app">
+        <header class="header clearfix">
+    <div id="nav" class="nav">
+    <button id="open-panel" class="open-panel"><i class="icon-library"></i></button>
+
+    <nav class="nav-inner">
+
+        
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+        </li>
+        
+        
+        
+        <li class="nav-item nav-item-tag">
+            <a id="nav-tag" class="nav-link" href="#">标签</a>
+            <div id="nav-tags" class="nav-tag-wrap">
+                <i class="nav-tag-arrow"></i>
+                
+  <div class="widget-wrap">
+    <h3 class="widget-title">
+        <i class="icon-tag vm"></i>
+        <span class="vm">标签</span>
+    </h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/FormRequest/">FormRequest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ValidationException/">ValidationException</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/debian/">debian</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/laravel/">laravel</a></li></ul>
+    </div>
+  </div>
+
+
+            </div>
+        </li>
+        
+        
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/archives">归档</a>
+        </li>
+        
+        
+        
+
+    </nav>
+</div>
+
+    <aside id="aside" class="aside">
+    <div id="aside-mask" class="aside-mask"></div>
+    <div id="aside-inner" class="aside-inner">
+        <!--<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"><i class="icon-search-stroke"></i></button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>-->
+
+        
+        
+        
+        
+
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建表单请求"><span class="toc-number">1.</span> <span class="toc-text">创建表单请求</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-FormRequest"><span class="toc-number">1.1.</span> <span class="toc-text">Create a FormRequest</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置request文件"><span class="toc-number">1.2.</span> <span class="toc-text">配置request文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取错误"><span class="toc-number">1.3.</span> <span class="toc-text">获取错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#前端处理"><span class="toc-number">1.4.</span> <span class="toc-text">前端处理</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+</header>
+
+        <div id="content" class="content"><article class="article" itemscope itemprop="blogPost">
+    
+        <header class="article-header">
+            
+                <h1 itemprop="name">
+                    自定义FormRequest ValidationException 返回错误信息
+                </h1>
+            
+            <div class="article-meta clearfix">
+                <a class="article-date" href="/2018/10/2018/10/hello-world.html">
+    
+    <i class="icon-calendar"></i>
+    
+    <time datetime="2018-10-24T08:55:37.603Z" itemprop="datePublished">2018-10-24</time>
+</a>
+
+                
+<div class="article-tag-list">
+    <i class="icon-tag"></i>
+    <a class="article-tag-link" href="/tags/FormRequest/">FormRequest</a>, <a class="article-tag-link" href="/tags/ValidationException/">ValidationException</a>, <a class="article-tag-link" href="/tags/laravel/">laravel</a>
+</div>
+
+
+            </div>
+        </header>
+    
+    <section class="article-body markdown-body">
+        
+            <p>对于复杂的验证场景，你可能想要创建一个“表单请求”。<br>表单请求是包含验证逻辑的自定义请求类，要创建表单验证类，<br>可以使用 Artisan 命令 make:request</p>
+<h2 id="创建表单请求"><a href="#创建表单请求" class="headerlink" title="创建表单请求"></a>创建表单请求</h2><h3 id="Create-a-FormRequest"><a href="#Create-a-FormRequest" class="headerlink" title="Create a FormRequest"></a>Create a FormRequest</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ php artisan make:request</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="配置request文件"><a href="#配置request文件" class="headerlink" title="配置request文件"></a>配置request文件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">public <span class="keyword">function</span> authorize()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line">public <span class="keyword">function</span> rules()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">return</span> [</span><br><span class="line">        <span class="string">'title'</span> =&gt; <span class="string">'required'</span>,</span><br><span class="line">        <span class="string">'category_id'</span> =&gt; <span class="string">'required'</span>,</span><br><span class="line">        <span class="string">'content'</span> =&gt; <span class="string">'required'</span>,</span><br><span class="line">    ];</span><br><span class="line">&#125;</span><br><span class="line">public <span class="keyword">function</span> messages()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">return</span> [</span><br><span class="line">        <span class="string">'title.required'</span> =&gt; <span class="string">'标题不能为空'</span>,</span><br><span class="line">        <span class="string">'category_id.required'</span> =&gt; <span class="string">'类别不能为空'</span>,</span><br><span class="line">        <span class="string">'content.required'</span> =&gt; <span class="string">'内容不能为空'</span>,</span><br><span class="line">    ];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="获取错误"><a href="#获取错误" class="headerlink" title="获取错误"></a>获取错误</h3><p>自定义返回异常在app\Exceptions\Handler.php里。</p>
+<p>表单验证抛出的是ValidationException，修改render方法里：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">public <span class="keyword">function</span> render(<span class="variable">$request</span>, Exception <span class="variable">$exception</span>) &#123;</span><br><span class="line">    //其他异常...</span><br><span class="line"></span><br><span class="line">    //自定义表单验证异常</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$exception</span> instanceof ValidationException) &#123;</span><br><span class="line">        <span class="built_in">return</span> <span class="variable">$this</span>-&gt;handleValidationExceptionToResponse(<span class="variable">$exception</span>, <span class="variable">$request</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    //...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后写你自己处理异常的逻辑：<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">//自定义返回异常消息</span><br><span class="line">protected <span class="keyword">function</span> handleValidationExceptionToResponse(ValidationException <span class="variable">$e</span>, <span class="variable">$request</span>) &#123;</span><br><span class="line">     <span class="variable">$errors</span> = <span class="variable">$e</span>-&gt;validator-&gt;errors()-&gt;first();</span><br><span class="line">    //自定义异常返回json</span><br><span class="line">    <span class="built_in">return</span> response()-&gt;json([<span class="string">'errcode'</span> =&gt; 1111, <span class="string">'errmsg'</span> =&gt; <span class="variable">$errors</span>], 422);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="前端处理"><a href="#前端处理" class="headerlink" title="前端处理"></a>前端处理</h3><p>axios catch 到错误信息并用message打印出来:<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">var _this = this.<span class="variable">$message</span>;</span><br><span class="line"></span><br><span class="line">this.<span class="variable">$axios</span>.post(<span class="string">'/news/create'</span>, &#123; params:params&#125;)</span><br><span class="line">                   .<span class="keyword">then</span>(<span class="keyword">function</span> (response) &#123;</span><br><span class="line">                       _this.success(response.data.msg);</span><br><span class="line">                   &#125;)</span><br><span class="line">                   .catch(<span class="keyword">function</span> (error) &#123;</span><br><span class="line">                       _this.error(error.response.data.errmsg);</span><br><span class="line">                   &#125;);</span><br></pre></td></tr></table></figure></p>
+
+        
+    </section>
+</article>
+
+
+
+<div class="comments">
+    <div id="disqus_thread">
+        <p class="comment-tips">国内查看评论需要代理~</p>
+    </div>
+    <script>
+    window.disqus_config = function () {
+        this.language = 'zh';
+        this.page.url = 'http://yoursite.com/2018/10/2018/10/hello-world.html';
+        this.page.title = '自定义FormRequest ValidationException 返回错误信息';
+        this.page.identifier = '2018/10/2018/10/hello-world.html';
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://name.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+</div>
+        <footer class="footer">
+    Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>, Theme by <a href="https://github.com/sanonz/hexo-theme-concise" target="_blank">Concise</a>
+</footer>
+
+<script type="text/javascript" src="//s13.cnzz.com/z_stat.php?id=1234567890&amp;web_id=1234567890"></script>
+
+
+    </div>
+
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/1.9.0/jquery.min.js"></script>
+    
+    <script type="text/javascript" src="/js/scrollspy.min.js"></script>
+    
+    <script type="text/javascript">
+        $(function() {
+            var nodes = {
+                nav: $('#nav'),
+                aside: $('#aside'),
+                navTags: $('#nav-tags')
+            };
+
+            $('#open-panel, #aside-mask').on('click', function() {
+                nodes.aside.toggleClass('panel-show');
+            });
+            $('#nav-tag').on('click', function(event) {
+                event.preventDefault();console.log(nodes.navTags.attr('class'))
+                nodes.navTags.toggleClass('tag-show');console.log(nodes.navTags.attr('class'))
+            })/*.hover(function() {
+                nodes.navTags.addClass('tag-show');
+            }, function() {
+                nodes.navTags.removeClass('tag-show');
+            });*/
+
+            
+            $(document.body).scrollspy({target: '#aside-inner'});
+            
+        });
+    </script>
+
+</body>
+</html>
